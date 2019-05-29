@@ -11,5 +11,5 @@ app.use(
 );
 
 require("./Controllers/AuthController")(app);
-
+require("./Controllers/ProjectsController")(app);
 app.listen(3000);
