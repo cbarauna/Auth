@@ -1,0 +1,15 @@
+{
+  "name": "Autenticacao",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.11"
+  },
+  "scripts": {
+    "start": "src/index.js"
+  }
+}
