@@ -10,6 +10,6 @@ app.use(
   })
 );
 
-require("./Controllers/AuthController")(app);
-require("./Controllers/ProjectsController")(app);
+require("./controllers/authController")(app);
+require("./controllers/projectsController")(app);
 app.listen(3000);
