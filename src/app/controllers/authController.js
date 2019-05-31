@@ -2,8 +2,9 @@ const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
-const authConfig = require("../config/auth");
+const authConfig = require("../../config/auth.json");
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router("/authenticate", async (req, res) => {
+router.post("/authenticate", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email }).select("+password");
@@ -38,6 +39,20 @@ router("/authenticate", async (req, res) => {
   user.password = undefined;
 
   res.send({ user, token: generateToken(user.id) });
+});
+
+router.post("forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).send({ error: "User not found" });
+
+    const token = crypto.randomBytes(20).toString("hex");
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+  } catch (err) {
+    res.status(400).send({ error: "Error on forgot password try again" });
+  }
 });
 
 module.exports = app => app.use("/auth", router);

@@ -10,6 +10,5 @@ app.use(
   })
 );
 
-require("./controllers/authController")(app);
-require("./controllers/projectsController")(app);
+require("./app/controllers/index")(app);
 app.listen(3000);
