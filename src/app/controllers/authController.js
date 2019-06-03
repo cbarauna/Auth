@@ -42,7 +42,7 @@ router.post("/authenticate", async (req, res) => {
   res.send({ user, token: generateToken(user.id) });
 });
 
-router.post("forgot-password", async (req, res) => {
+router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -78,4 +78,27 @@ router.post("forgot-password", async (req, res) => {
   }
 });
 
+router.post("/reset_password", async (req, res) => {
+  const { email, token, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email }).select(
+      "+passwordResetToken passwordResetExpires"
+    );
+
+    if (!user) return res.status(400).send({ error: "User not found" });
+    if (token !== user.passwordResetToken)
+      return res.send(400).send({ error: "Token Invalid" });
+    const now = new Date();
+
+    if (now > user.passwordResetExpires)
+      return res.send(400).send({ erro: "Token expired" });
+
+    user.password = password;
+    await user.save();
+    res.send();
+  } catch (error) {
+    res.status(400).send({ error: "Cannot reset Password, try again" });
+  }
+});
 module.exports = app => app.use("/auth", router);
