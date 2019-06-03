@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
-
-mongoose.connect(
-  "mongodb://bossa-box:bossabox2018@ds031271.mlab.com:31271/bossa-bom-tools",
-  { useMongoClient: true }
-);
+try {
+  mongoose.connect(
+    "mongodb+srv://root:root@cluster0-fze0y.mongodb.net/test?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
+  );
+} catch (err) {
+  console.log(err);
+}
 
 mongoose.Promise = global.Promise;
 
